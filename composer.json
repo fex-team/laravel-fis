@@ -1,0 +1,25 @@
+{
+    "name": "fex-team/laravel-fis",
+    "description": "FIS resource loader for laravel",
+    "keywords": ["laravel", "fis", "blade"],
+    "authors": [
+        {
+            "name": "fex-team",
+            "homepage": "https://github.com/fex-team",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.x|~5.0"
+    },
+    "autoload": {
+        "classmap": [
+        ],
+        "psr-0": {
+            "FIS\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "license": "MIT"
+}

@@ -1,2 +1,3 @@
 # laravel-fis
-FIS resource loader for laravel
+
+适用于 Laravel 5 的 FIS 资源加载器。
