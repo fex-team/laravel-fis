@@ -10,9 +10,11 @@
 
   ```json
   "require": {
-  ...
+  // ...
+  
   "fex-team/laravel-fis": "*",
-  ...
+  
+  // ...
   },
   ```
 2. 添加 Provider 到 `config/app.php` 配置项中。
