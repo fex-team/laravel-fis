@@ -8,13 +8,13 @@
 
 1. 添加依赖到 `composer.json` 文件中，并通过 `composer udpate` 下载下来。
 
-  ```json
+  ```
   "require": {
-  // ...
+  ...
   
   "fex-team/laravel-fis": "*",
   
-  // ...
+  ...
   },
   ```
 2. 添加 Provider 到 `config/app.php` 配置项中。
