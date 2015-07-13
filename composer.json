@@ -23,7 +23,7 @@
         "classmap": [
         ],
         "psr-0": {
-            "FIS\\": "src/"
+            "Fis\\": "src/"
         }
     },
     "license": "MIT"
