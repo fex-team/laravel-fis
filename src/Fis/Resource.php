@@ -25,6 +25,7 @@ class Resource {
     const JS_SCRIPT_HOOK = '<!--[FIS_JS_SCRIPT_HOOK]-->';
     const FRAMEWORK_HOOK = '<!--[FIS_FRAMEWORK_HOOK]-->';
     const FRAMEWORK_CONFIG_HOOK = '<!--[FIS_FRAMEWORK_CONFIG_HOOK]-->';
+    const FRAMEWORK_CONFIG_HOOK_WITH_SCRIPT = '<!--[FIS_FRAMEWORK_CONFIG_HOOK_WITH_SCRIPT]-->';
 
     protected $resoucrcType = 'amd';
 
@@ -269,9 +270,11 @@ class Resource {
         $body = trim(ob_get_clean());
 
         if ($body) {
-            $this->addJsEmbed($body, $last['uri'], $last['prefix']);
+//            $this->addJsEmbed($body, $last['uri'], $last['prefix']);
+            echo "<!--f.jb(".$last['prefix'].", ".$last['affix'].", ".$body.")-->";
         } else {
-            $this->addJs($last['uri'], $last['prefix'], $last['affix']);
+//            $this->addJs($last['uri'], $last['prefix'], $last['affix']);
+            echo "<!--f.js(".$last['prefix'].", ".$last['affix'].", ".$last['uri'].")-->";
         }
     }
 
@@ -296,9 +299,11 @@ class Resource {
         $body = trim(ob_get_clean());
 
         if ($body) {
-            $this->addCssEmbed($body, $last['uri'], $last['prefix']);
+//            $this->addCssEmbed($body, $last['uri'], $last['prefix']);
+            echo "<!--f.cb(".$last['prefix'].", ".$last['affix'].", ".$body.")-->";
         } else {
-            $this->addCss($last['uri'], $last['prefix'], $last['affix']);
+//            $this->addCss($last['uri'], $last['prefix'], $last['affix']);
+            echo "<!--f.cs(".$last['prefix'].", ".$last['affix'].", ".$last['uri'].")-->";
         }
     }
 
@@ -313,6 +318,8 @@ class Resource {
             return self::CSS_LINKS_HOOK;
         } else if ($type === 'framework_config') {
             return self::FRAMEWORK_CONFIG_HOOK;
+        } else if ($type === 'framework_config_with_script') {
+            return self::FRAMEWORK_CONFIG_HOOK_WITH_SCRIPT;
         }
 
         return self::JS_SCRIPT_HOOK;
@@ -502,17 +509,26 @@ class Resource {
     }
 
     public function filter($content) {
-        $content = trim(preg_replace_callback('/<!---(.+?)--->\n?/', function($m) {
-            $params = explode(",", $m[1]);
-            $args = array_map(function($item) {
-                $item = trim($item);
-                return $item === 'true' ? true : ($item === 'false' ? false : substr($item, 1, strlen($item) - 2));
-            }, $params);
 
-            call_user_func_array(array($this, "add"), $args);
+        $content = preg_replace_callback('/<!--f\.(\w+)\(([\s\S]+?)\)-->\n?/', function($m) {
+            $params = explode(",", $m[2], 3);
+
+            if ($m[1] == 'r') {
+                $this->add($params[0], false, isset($params[1]) ? $params[1] : "", isset($params[2]) ? $params[2] : "");
+            } else if ($m[1] == 'jb') {
+                $this->addJsEmbed($params[2], $params[0], $params[1]);
+            } else if ($m[1] == 'js') {
+                $this->addJs($params[2], $params[0], $params[1]);
+            } else if ($m[1] == 'cb') {
+                $this->addCssEmbed($params[2], $params[0], $params[1]);
+            } else if ($m[1] == 'cs') {
+                $this->addCss($params[2], $params[0], $params[1]);
+            }
+
             return "";
-        }, $content));
+        }, $content);
 
+        $content = trim($content);
         $this->calculate();
 
         if (false !== strpos($content, self::FRAMEWORK_HOOK)) {
@@ -536,6 +552,13 @@ class Resource {
             $resourcemap = $this->resoucrcType === 'mod' ? $this->buildResourceMap() : $this->buildAMDPath();
             $resourcemapOutputed = true;
             $content = str_replace(self::FRAMEWORK_CONFIG_HOOK, $resourcemap, $content);
+        } else if (false !== strpos($content, self::FRAMEWORK_CONFIG_HOOK_WITH_SCRIPT)) {
+            $resourcemap = $this->resoucrcType === 'mod' ? $this->buildResourceMap() : $this->buildAMDPath();
+            if ($resourcemap) {
+                $resourcemap = "<script>${resourcemap}</script>";
+            }
+            $resourcemapOutputed = true;
+            $content = str_replace(self::FRAMEWORK_CONFIG_HOOK_WITH_SCRIPT, $resourcemap, $content);
         }
 
         if (false !== strpos($content, self::JS_SCRIPT_HOOK)) {

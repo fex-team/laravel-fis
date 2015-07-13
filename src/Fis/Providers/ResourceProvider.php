@@ -9,11 +9,7 @@ use App;
 
 class ResourceProvider extends ServiceProvider {
 
-    protected function wrap($id) {
-        return "<!---".$id."--->";
-    }
-
-	/**
+    /**
 	 * Bootstrap the application services.
 	 *
 	 * @return void
@@ -141,10 +137,9 @@ class ResourceProvider extends ServiceProvider {
 
     protected function compileRequire($expression, $match) {
         $params = explode(",", $match[4]);
-        array_splice($params, 1, 0, "false");
-        $params[0] = "'<?php echo {$params[0]} ?>'";
+        $params[0] = "<?php echo {$params[0]} ?>";
         $expression = join(", ", $params);
-        return $this->wrap($expression);
+        return "<!--f.r(".$expression.")-->";
     }
 
     protected function compileInclude($expression, $match) {
