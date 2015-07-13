@@ -39,7 +39,7 @@ class ResourceProvider extends ServiceProvider {
             if (isset($app['config']['view']['mapPath'])) {
                 $mapPath = $app['config']['view']['mapPath'];
             } else {
-                $mapPath = realpath(base_path('resources/map'))
+                $mapPath = realpath(base_path('resources/map'));
             }
 
             return new FisResource($app['files'], $mapPath);
