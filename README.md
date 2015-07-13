@@ -49,7 +49,7 @@
     'Fis'       => 'Fis\Facades\Fis',
   ],
   ```
-4. 默认 fis 产出的 `map.json` 文件应该存放在 `resources/map` 目录，如果像修改，请修改 `config/view.php` 配置文件。
+4. 默认 fis 产出的 `map.json` 文件应该存放在 `resources/map` 目录，如果想修改，请修改 `config/view.php` 配置文件。
 
   ```php
   /*
