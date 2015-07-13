@@ -26,6 +26,5 @@
             "FIS\\": "src/"
         }
     },
-    "minimum-stability": "stable",
     "license": "MIT"
 }
