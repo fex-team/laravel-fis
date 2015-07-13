@@ -13,6 +13,12 @@
         "php": ">=5.4.0",
         "illuminate/support": "4.2.x|~5.0"
     },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/fex-team/laravel-fis.git"
+        }
+    ],
     "autoload": {
         "classmap": [
         ],
