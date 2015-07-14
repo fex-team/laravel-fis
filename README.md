@@ -2,7 +2,11 @@
 
 [![Laravel](https://img.shields.io/badge/Laravel-~5.0-orange.svg?style=flat-square)](http://laravel.com)
 
-适用于 Laravel 5 的 FIS 资源加载器。关于前端编译部分，请查看[fis3 laravel 脚手架](https://github.com/fis-scaffold/laravel)。
+适用于 Laravel 5 的 FIS 资源加载器。
+
+- 关于前端编译部分，请查看[fis3 laravel 脚手架](https://github.com/fis-scaffold/laravel)。
+- 关于本模块功能扩展，请查看 [功能说明](./functions.md)
+
 
 ## Getting Started
 
