@@ -12,6 +12,36 @@
 
 Laravel 中自带模板路径路径写法太诡异。不能写后缀 `.balde.php`，文件夹用 `.` 分割。
 
+```php
+class FisIdResolver extends FileViewFinder {
+
+    /**
+     * 提供更多的可能文件，供查找。
+     */
+    protected function getPossibleViewFiles($name)
+    {
+        $arr = array();
+        $name = ltrim($name, ".");
+        $name = preg_replace('/\.blade\.php$/', "", $name);
+        $parts = explode(".", $name);
+
+        foreach($this->extensions as $extension) {
+            $len = sizeof($parts);
+            $i = 0;
+            $dir = "";
+            for(; $i < $len; $i++) {
+                $basename = join(".", array_slice($parts, $i));
+                $arr[] = $dir.$basename.".".$extension;
+                $dir .= $parts[$i]."/";
+            }
+        }
+
+        return $arr;
+    }
+
+}
+```
+
 ## 扩展模板引擎
 
 目的是在模板解析后，吐出到浏览器端前，进行一次 `filter` 过滤，替换占位符。实现把收集到的 js 和 css 替换到页面中适当的位置。
