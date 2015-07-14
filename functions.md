@@ -16,9 +16,37 @@ Laravel 中自带模板路径路径写法太诡异。不能写后缀 `.balde.php
 
 目的是在模板解析后，吐出到浏览器端前，进行一次 `filter` 过滤，替换占位符。实现把收集到的 js 和 css 替换到页面中适当的位置。
 
+```php
+/**
+ * For filter template output.
+ */
+protected function overrideCompilerEngine() {
+    $app = $this->app;
+    $resolver = $app->make('view.engine.resolver');
+    $resolver->register('blade', function() use ($app)
+    {
+        return new HackedCompilerEngine($app['blade.compiler'], $app['files']);
+    });
+}
+
+// 然后 Engine 就是在适当地方调用
+$doneRendering && ($result = Fis::filter($result));
+```
+
 ## 共享 `__fis` 对象
 
 让模板中可以通过 `$__fis` 变量来控制 fis 的[资源加载实例](https://github.com/fex-team/laravel-fis/blob/master/src/Fis/Resource.php)。
+
+```php
+protected function shareFis() {
+    $fis = $this->app->make('fis');
+
+    View::composer('*', function($view) use ($fis)
+    {
+        $view->with('__fis', $fis);
+    });
+}
+```
 
 ## 扩展 blade 语法
 
