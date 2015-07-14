@@ -22,6 +22,27 @@ Laravel 中自带模板路径路径写法太诡异。不能写后缀 `.balde.php
 
 ## 扩展 blade 语法
 
-让 blade 支持更多的用法，更多说明请查看 laravel 解决反感中[扩展的 blade 说明](https://github.com/fis-scaffold/laravel#扩展的-blade-语法说明)
+让 blade 支持更多的用法，关于语法说明，请查看 laravel 解决方案中[扩展的 blade 说明](https://github.com/fis-scaffold/laravel#扩展的-blade-语法说明)
 
+至于实现细节其实通过 $blade 提供的 `extend` 接口来实现，然后就是一堆正则替换，转换成 php 代码。而代码中就是通过 `$__fis` 来操作。
+如： `$__fis->add(id)`、`$__fis->startScript()` 以及 `$__fis->endScript()` 等等。 
 
+```php
+/**
+ * Extend Blade Syntax
+ */
+protected function extendBlade() {
+    $blade = $this->app['view']->getEngineResolver()->resolve('blade')->getCompiler();
+
+    $blade->extend(function($value) use ($blade)
+    {
+        return $this->compileBlade($value, $blade);
+    });
+}
+```
+
+```php
+protected function compileFramework($expression) {
+    return "<?php \$__fis->setFramework{$expression}; ?>";
+}
+```
