@@ -401,6 +401,7 @@ class Resource {
             }
         }
 
+        $asyncCss = array();
         foreach($this->res as $item) {
             $list = null;
 
@@ -411,7 +412,21 @@ class Resource {
                     $this->asyncs[] = $item;
                 }
             } else if ($item['type'] === 'css') {
-               $this->css[] = $item;
+                if (empty($item['async'])) {
+                    $this->css[] = $item;
+                } else {
+                    $asyncCss[] = $item;
+                }
+            }
+        }
+
+        foreach($asyncCss as $item) {
+            $idx = $this->search($this->css, function($target) use($item) {
+                return $item['uri'] === $target['uri'];
+            });
+
+            if ($idx === false) {
+                $this->css[] = $item;
             }
         }
     }
