@@ -10,7 +10,7 @@
 
 ## Getting Started
 
-1. 添加依赖到 `composer.json` 文件中，并通过 `composer udpate` 下载下来。
+1. 添加依赖到 `composer.json` 文件中，并通过 `composer update` 下载下来。
 
   ```
   "require": {
