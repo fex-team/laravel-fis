@@ -453,9 +453,19 @@ class Resource {
             );
 
             if (isset($node['deps'])) {
-                $deps = array_filter($node['deps'], function($id) {
-                    return !empty($this->loaded[$id]) && !preg_match('/\.css$/', $id);
-                });
+                $deps = array();
+                foreach ($node['deps'] as $depId) {
+                    $dep = $this->getNode($depId);
+
+                    if (isset($dep) && $dep['type'] === 'js') {
+                        $deps[] = $depId;
+                    }
+                }
+
+                // 尼玛，filter 后 json 序列化成对象
+                // $deps = array_filter($node['deps'], function($id) {
+                //     return !empty($this->loaded[$id]) && !preg_match('/\.css$/', $id);
+                // });
 
                 if (count($deps)) {
                     $item['deps'] = $deps;
