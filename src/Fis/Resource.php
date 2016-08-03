@@ -23,7 +23,7 @@ class Resource {
 
     const CSS_LINKS_HOOK = '<!--[FIS_CSS_LINKS_HOOK]-->';
     const JS_SCRIPT_HOOK = '<!--[FIS_JS_SCRIPT_HOOK]-->';
-    const FRAMEWORK_HOOK = '<!--[FIS_FRAMEWORK_HOOK]-->';
+    const FRAMEWORK_HOOK = '<!--[FIS_FRAMEWORK_HOOKb]-->';
     const FRAMEWORK_CONFIG_HOOK = '<!--[FIS_FRAMEWORK_CONFIG_HOOK]-->';
     const FRAMEWORK_CONFIG_HOOK_WITH_SCRIPT = '<!--[FIS_FRAMEWORK_CONFIG_HOOK_WITH_SCRIPT]-->';
 
@@ -473,7 +473,7 @@ class Resource {
             }
 
             $moudleId = isset($node['extra']) && isset($node['extra']['moduleId']) ? $node['extra']['moduleId'] : preg_replace('/\.js$/', '', $id);
-            $res[$moudleId] = $item;
+            
 
             if (!empty($node['pkg'])) {
                 $item['pkg'] = $node['pkg'];
@@ -484,6 +484,8 @@ class Resource {
                 );
                 $pkg[$node['pkg']] = $pkgItem;
             }
+            
+            $res[$moudleId] = $item;
         }
 
         if (empty($res)) {
